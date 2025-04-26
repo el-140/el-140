@@ -1,5 +1,5 @@
 const products = [
-  { id: '1', name: 'Sample Product 1', price: '$19.99', reference: 'REF001', status: 'Available', description: 'Description for product 1', image: 'Assets/Media/product1.jpg' },
+  { id: '1', name: 'Sample Product 1', price: '$19.99', reference: 'REF001', status: 'Available', description: 'Description for product 1', image: 'Assets/Media/12.png' },
   { id: '2', name: 'Sample Product 2', price: '$29.99', reference: 'REF002', status: 'Not Available', description: 'Description for product 2', image: 'Assets/Media/product2.jpg' },
   { id: '3', name: 'Sample Product 3', price: '$39.99', reference: 'REF003', status: 'Available', description: 'Description for product 3', image: 'Assets/Media/product3.jpg' },
   { id: '4', name: 'Sample Product 4', price: '$49.99', reference: 'REF004', status: 'Available', description: 'Description for product 4', image: 'Assets/Media/product4.jpg' }
@@ -172,6 +172,24 @@ function setupMobileMenu() {
     });
   });
 }
+
+// Disable right-click on the entire website
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  return false;
+});
+
+// Disable keyboard shortcuts that could be used to copy content
+document.addEventListener('keydown', function(e) {
+  // Disable Ctrl+C, Ctrl+U (view source), Ctrl+S (save), F12 (dev tools)
+  if (
+    (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 85 || e.keyCode === 83)) || 
+    e.keyCode === 123
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
 
 // Initialize on DOM load
 window.addEventListener('DOMContentLoaded', () => {
