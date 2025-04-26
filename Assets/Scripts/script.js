@@ -156,22 +156,53 @@ function setupMarketplaceSearch() {
 // Mobile menu functionality
 function setupMobileMenu() {
   const menuBtn = document.querySelector('.mobile-menu-btn');
-  const navLinks = document.querySelector('.navbar .nav-links');
+  const navLinks = document.querySelector('.nav-links');
   
   if (!menuBtn || !navLinks) return;
   
-  menuBtn.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
+  // Add menu icon
+  if (!menuBtn.innerHTML) {
+    menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+  }
+  
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navLinks.classList.toggle('active');
+    
+    // Change icon based on menu state
+    if (navLinks.classList.contains('active')) {
+      menuBtn.innerHTML = '<i class="fas fa-times"></i>';
+    } else {
+      menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.navbar') && navLinks.classList.contains('active')) {
+      navLinks.classList.remove('active');
+      menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+  });
+  
+  // Add animation delay to each nav item
+  const navItems = navLinks.querySelectorAll('li');
+  navItems.forEach((item, index) => {
+    item.style.setProperty('--i', index);
   });
   
   // Close menu when clicking a link
   const links = navLinks.querySelectorAll('a');
   links.forEach(link => {
     link.addEventListener('click', () => {
-      navLinks.classList.remove('open');
+      navLinks.classList.remove('active');
+      menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
     });
   });
 }
+
+// Mobile Menu Toggle
+// Removing duplicate code since we already have setupMobileMenu function
 
 // Disable right-click on the entire website
 document.addEventListener('contextmenu', function(e) {
