@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>el-140 | Marketplace</title>
+    <link rel="stylesheet" href="Assets/Styles/style.css">
+    <link rel="stylesheet" href="Assets/Styles/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar glass">
+        <a href="index.html" class="logo">el-140</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Marketplace.html" class="active">Marketplace</a></li>
+            <li><a href="About-Us.html">About Us</a></li>
+            <li><a href="Contact-Us.html">Contact Us</a></li>
+        </ul>
+        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+    </nav>
+
+    <section class="marketplace-section">
+        <h1 class="text-center">Marketplace</h1>
+        <div class="search-container">
+            <input type="text" placeholder="Search products..." class="search-input">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="marketplace-list" id="marketplace-list">
+            <!-- Product listings will be dynamically inserted here -->
+        </div>
+    </section>
+
+    <footer class="glass">
+        <div class="container">
+            <div class="logo" style="font-weight:800;font-size:1.3rem;color:var(--primary);margin-bottom:0.5rem;">el-140</div>
+            <div style="color:var(--text-light);">&copy; 2025 el-140. All rights reserved.</div>
+            <div style="margin-top:1rem;font-size:0.95rem;">
+                <a href="About-Us.html">About Us</a> &middot; <a href="Contact-Us.html">Contact</a> &middot; <a href="Marketplace.html">Marketplace</a>
+            </div>
+        </div>
+    </footer>
+    <script src="Assets/Scripts/script.js"></script>
+</body>
+</html>

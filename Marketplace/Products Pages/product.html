@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>el-140 | Product Detail</title>
+  <link rel="stylesheet" href="../../Assets/Styles/style.css">
+  <link rel="stylesheet" href="../../Assets/Styles/mobile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 2em;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+      max-width: 500px;
+      width: 90%;
+    }
+    .close-modal {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .close-modal:hover {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar glass">
+    <a href="../../index.html" class="logo">el-140</a>
+    <ul class="nav-links">
+      <li><a href="../../index.html">Home</a></li>
+      <li><a href="../../Marketplace.html" class="active">Marketplace</a></li>
+      <li><a href="../../About-Us.html">About Us</a></li>
+      <li><a href="../../Contact-Us.html">Contact Us</a></li>
+    </ul>
+    <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+  </nav>
+
+  <div class="product-detail-container" id="product-detail">
+    <div class="product-detail-left">
+      <img id="detail-image" src="" alt="Product Image">
+      <p class="status-badge">Status: <span id="detail-status" class="badge"></span></p>
+    </div>
+    <div class="product-detail-right">
+      <h2 id="detail-name"></h2>
+      <p id="detail-description"></p>
+      <p class="price" id="detail-price"></p>
+      <p id="detail-reference"></p>
+      <button id="buy-now-btn" class="btn btn-primary">Buy Now</button>
+    </div>
+  </div>
+
+  <!-- Purchase Form Modal -->
+  <div id="purchase-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Complete Your Purchase</h2>
+      <form id="purchase-form" action="https://formsubmit.co/el140.store@gmail.com" method="POST">
+        <input type="hidden" id="form-product-name" name="Product Name" value="">
+        <input type="hidden" id="form-product-price" name="Product Price" value="">
+        <input type="hidden" id="form-product-ref" name="Product Reference" value="">
+        <input type="hidden" id="form-product-link" name="Product Link" value="">
+        <input type="hidden" name="_next" value="../../Thank-you.html">
+        
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="Full Name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="phoneNumber">Phone Number</label>
+          <input type="text" id="phoneNumber" name="Phone Number" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="location">Location</label>
+          <input type="text" id="location" name="Location" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="cin">CIN (Optional)</label>
+          <input type="text" id="cin" name="CIN">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit Order</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="glass">
+    <div class="container">
+      <div class="logo" style="font-weight:800;font-size:1.3rem;color:var(--primary);margin-bottom:0.5rem;">el-140</div>
+      <div style="color:var(--text-light);">&copy; 2025 el-140. All rights reserved.</div>
+      <div style="margin-top:1rem;font-size:0.95rem;">
+        <a href="../../About-Us.html">About Us</a> &middot; <a href="../../Contact-Us.html">Contact</a> &middot; <a href="../../Marketplace.html">Marketplace</a>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="../../Assets/Scripts/script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get the modal
+      const modal = document.getElementById('purchase-modal');
+      const buyNowBtn = document.getElementById('buy-now-btn');
+      const closeModal = document.querySelector('.close-modal');
+      
+      // Get product information
+      const productName = document.getElementById('detail-name');
+      const productPrice = document.getElementById('detail-price');
+      const productRef = document.getElementById('detail-reference');
+      
+      // Get form fields
+      const formProductName = document.getElementById('form-product-name');
+      const formProductPrice = document.getElementById('form-product-price');
+      const formProductRef = document.getElementById('form-product-ref');
+      const formProductLink = document.getElementById('form-product-link');
+      
+      // Open modal when Buy Now is clicked
+      if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', function() {
+          // Fill in the product information
+          if (productName && formProductName) {
+            formProductName.value = productName.textContent;
+          }
+          
+          if (productPrice && formProductPrice) {
+            formProductPrice.value = productPrice.textContent;
+          }
+          
+          if (productRef && formProductRef) {
+            // Extract just the reference number
+            const refText = productRef.textContent;
+            const refValue = refText.replace('Ref: ', '');
+            formProductRef.value = refValue;
+          }
+          
+          // Set the current URL as the product link
+          formProductLink.value = window.location.href;
+          
+          // Show the modal
+          modal.style.display = 'block';
+        });
+      }
+      
+      // Close modal when X is clicked
+      if (closeModal) {
+        closeModal.addEventListener('click', function() {
+          modal.style.display = 'none';
+        });
+      }
+      
+      // Close modal when clicking outside the modal content
+      window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

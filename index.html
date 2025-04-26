@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>el-140 | Premium Products</title>
+    <link rel="stylesheet" href="Assets/Styles/style.css">
+    <link rel="stylesheet" href="Assets/Styles/mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', var(--font-family);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        .hero {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            pointer-events: none;
+        }
+        .features-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .testimonials-section {
+            background: linear-gradient(135deg, #f0f2f5 0%, #e6e9ec 100%);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .testimonial-card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            max-width: 350px;
+            text-align: left;
+        }
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            object-fit: cover;
+        }
+        .testimonial-name {
+            font-weight: 600;
+            margin: 0;
+        }
+        .testimonial-title {
+            color: var(--text-light);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .cta-content h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .cta-content p {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .btn-light {
+            background: white;
+            color: var(--primary);
+        }
+        .btn-light:hover {
+            background: rgba(255,255,255,0.9);
+        }
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .stats-section {
+            padding: 3rem 2rem;
+            background: white;
+        }
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 3rem;
+        }
+        .stat-item {
+            text-align: center;
+            flex: 1 1 200px;
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+        @media (max-width: 768px) {
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .feature-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar glass">
+        <a href="index.html" class="logo">el-140</a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="Marketplace.html">Marketplace</a></li>
+            <li><a href="About-Us.html">About Us</a></li>
+            <li><a href="Contact-Us.html">Contact Us</a></li>
+        </ul>
+        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to el-140</h1>
+            <p class="hero-subtitle">Your premier destination for high-quality products with exceptional service.</p>
+            <div class="hero-cta">
+                <a href="Marketplace.html" class="btn btn-primary">Explore Marketplace</a>
+                <a href="Contact-Us.html" class="btn">Contact Us</a>
+            </div>
+        </div>
+        <div class="animated-blob" style="width:250px;height:250px;top:15%;left:8%;background:var(--accent);border-radius:50%;"></div>
+        <div class="animated-blob" style="width:300px;height:300px;bottom:5%;right:10%;background:var(--gold);border-radius:50%;"></div>
+    </section>
+    
+    <div class="divider-wavy">
+        <svg viewBox="0 0 1440 48" preserveAspectRatio="none">
+            <path fill="var(--surface)" d="M0,48L1440,0L1440,48L0,48Z"></path>
+        </svg>
+    </div>
+
+    <section class="section top-products" id="top-products">
+        <h2 class="text-center">Featured Products</h2>
+        <p class="text-center" style="max-width:700px;margin:0 auto 2rem;color:var(--text-light);">Discover our most popular items, carefully selected for quality and value.</p>
+        <div class="products-scroll" id="top-products-list"></div>
+    </section>
+
+    <section class="features-section">
+        <h2 class="text-center">Why Choose el-140</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Premium Quality</h3>
+                <p>All our products undergo rigorous quality testing to ensure they meet the highest standards.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h3>Fast Delivery</h3>
+                <p>We ensure quick processing and shipping to get your products to you as soon as possible.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Our customer service team is always available to assist you with any questions or concerns.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure Shopping</h3>
+                <p>Shop with confidence knowing your personal information is protected with advanced security.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">5000+</div>
+                <div class="stat-label">Happy Customers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Products</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Satisfaction Rate</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Customer Support</div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Discover Quality Products?</h2>
+            <p>Browse our extensive collection of premium products and find exactly what you're looking for.</p>
+            <div class="cta-buttons">
+                <a href="Marketplace.html" class="btn btn-light">Shop Now</a>
+                <a href="Contact-Us.html" class="btn btn-outline">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="glass">
+        <div class="container">
+            <div class="logo" style="font-weight:800;font-size:1.3rem;color:var(--primary);margin-bottom:0.5rem;">el-140</div>
+            <div style="color:var(--text-light);">&copy; 2025 el-140. All rights reserved.</div>
+            <div style="margin-top:1rem;font-size:0.95rem;">
+                <a href="About-Us.html">About Us</a> &middot; <a href="Contact-Us.html">Contact</a> &middot; <a href="Marketplace.html">Marketplace</a>
+            </div>
+        </div>
+    </footer>
+    <script src="Assets/Scripts/script.js"></script>
+</body>
+</html>
