@@ -227,33 +227,35 @@
       <span class="close-modal">&times;</span>
       <h2>Complete Your Purchase</h2>
       <div id="form-container">
-        <form id="purchase-form" action="https://formsubmit.co/el140.store@gmail.com" method="POST">
-          <input type="hidden" id="form-product-name" name="Product Name" value="">
-          <input type="hidden" id="form-product-price" name="Product Price" value="">
-          <input type="hidden" id="form-product-ref" name="Product Reference" value="">
-          <input type="hidden" id="form-product-link" name="Product Link" value="">
-          <input type="hidden" name="_next" value="../../Thank-you.html">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-          <input type="text" name="_honey" style="display:none">
+        <form id="purchase-form" action="https://api.web3forms.com/submit" method="POST">
+          <!-- REQUIRED: Web3Forms Access Key - Get your key from https://web3forms.com/ -->
+          <input type="hidden" name="access_key" value="eaf3d906-1cc4-43b2-83f1-2efeaae41eda">
+          
+          <input type="hidden" id="form-product-name" name="product_name" value="">
+          <input type="hidden" id="form-product-price" name="product_price" value="">
+          <input type="hidden" id="form-product-ref" name="product_reference" value="">
+          <input type="hidden" id="form-product-link" name="product_link" value="">
+          <input type="hidden" name="subject" value="New Order from el-140 Store">
+          <input type="hidden" name="redirect" value="../../Thank-you.html">
+          
           <div class="form-group">
             <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" name="Full Name" required>
+            <input type="text" id="fullName" name="full_name" required>
           </div>
           
           <div class="form-group">
             <label for="phoneNumber">Phone Number</label>
-            <input type="text" id="phoneNumber" name="Phone Number" required>
+            <input type="text" id="phoneNumber" name="phone_number" required>
           </div>
           
           <div class="form-group">
             <label for="location">Location</label>
-            <input type="text" id="location" name="Location" required>
+            <input type="text" id="location" name="location" required>
           </div>
           
           <div class="form-group">
             <label for="cin">CIN (Optional)</label>
-            <input type="text" id="cin" name="CIN">
+            <input type="text" id="cin" name="cin">
           </div>
           
           <button type="submit" class="btn-order">Submit Order</button>
@@ -290,6 +292,7 @@
       const closeModal = document.querySelector('.close-modal');
       const formContainer = document.getElementById('form-container');
       const successMessage = document.getElementById('success-message');
+      const purchaseForm = document.getElementById('purchase-form');
       
       // Get product information
       const productName = document.getElementById('detail-name');
@@ -334,6 +337,32 @@
           
           // Show the modal
           modal.style.display = 'block';
+        });
+      }
+      
+      // Store data in localStorage when form is submitted
+      if (purchaseForm) {
+        purchaseForm.addEventListener('submit', function() {
+          // Store order data in localStorage as backup
+          const orderData = {
+            product: productName ? productName.textContent : 'Unknown Product',
+            price: productPrice ? productPrice.textContent : 'Unknown Price',
+            reference: productRef ? productRef.textContent.replace('Ref: ', '') : 'Unknown Reference',
+            customerName: fullNameInput.value,
+            phoneNumber: phoneNumberInput.value,
+            location: locationInput.value,
+            cin: cinInput.value || '',
+            orderDate: new Date().toISOString(),
+            url: window.location.href
+          };
+          
+          try {
+            const orders = JSON.parse(localStorage.getItem('el140_orders') || '[]');
+            orders.push(orderData);
+            localStorage.setItem('el140_orders', JSON.stringify(orders));
+          } catch (e) {
+            console.log('Could not save order to localStorage');
+          }
         });
       }
       
