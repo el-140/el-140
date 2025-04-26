@@ -1,26 +1,27 @@
 const products = [
-  { id: '1', name: 'Sample Product 1', price: '$19.99', reference: 'REF001', status: 'Available', description: 'Description for product 1', image: 'Assets/Media/12.png' },
-  { id: '2', name: 'Sample Product 2', price: '$29.99', reference: 'REF002', status: 'Not Available', description: 'Description for product 2', image: 'Assets/Media/product2.jpg' },
-  { id: '3', name: 'Sample Product 3', price: '$39.99', reference: 'REF003', status: 'Available', description: 'Description for product 3', image: 'Assets/Media/product3.jpg' },
-  { id: '4', name: 'Sample Product 4', price: '$49.99', reference: 'REF004', status: 'Available', description: 'Description for product 4', image: 'Assets/Media/product4.jpg' }
+  { id: '1', name: 'Sejed TRABELSSI', price: '25DT', reference: 'ST-985', status: 'Available', description: 'TEST', image: 'mox51h.jpg' },
+  { id: '2', name: 'Sample Product 2', price: '$29.99', reference: 'REF002', status: 'Not Available', description: 'Description for product 2', image: '31.jpg' },
+  { id: '3', name: 'Sample Product 3', price: '$39.99', reference: 'REF003', status: 'Available', description: 'Description for product 3', image: '' },
+  { id: '4',  name: 'Sample Product 4', price: '$49.99', reference: 'REF004', status: 'Available', description: 'Description for product 4', image: 'IMG_9965.png' }
 ];
 
 function getAssetPath(path) {
+  // Check if we're on the product detail page or marketplace page
   if (window.location.pathname.includes('/Marketplace/Products Pages/')) {
-    return `../../${path}`;
+    return `../../Assets/Media/${path}`; // Path from product detail page
   }
-  return path;
+  return `Assets/Media/${path}`; // Path from marketplace or home page
 }
 
 function renderTopProducts() {
   const container = document.getElementById('top-products-list');
   if (!container) return;
   container.innerHTML = '';
-  products.slice(0, 4).forEach(p => {
+  products.slice(0,1).forEach(p => {
     const div = document.createElement('div');
     div.className = 'product-item glass';
     div.innerHTML = `
-      <img src="${getAssetPath(p.image)}" alt="${p.name}">
+      <img src="${getAssetPath(p.image)}" alt="${p.name}" onerror="this.src='Assets/Media/no.jpg'">
       <h3>${p.name}</h3>
       <p class="price">${p.price}</p>
       <p class="ref">Ref: ${p.reference}</p>
@@ -43,7 +44,7 @@ function renderMarketplace(filter = '') {
     div.className = 'product-card glass';
     div.innerHTML = `
       <div class="product-image">
-        <img src="${getAssetPath(p.image)}" alt="${p.name}">
+        <img src="${getAssetPath(p.image)}" alt="${p.name}" onerror="this.src='Assets/Media/no.jpg'">
       </div>
       <div class="product-details">
         <h3>${p.name}</h3>
@@ -55,6 +56,9 @@ function renderMarketplace(filter = '') {
     `;
     container.appendChild(div);
   });
+  
+  // Debug log
+  console.log("Marketplace rendered with " + list.length + " products");
 }
 
 function renderProductDetail() {
@@ -78,8 +82,21 @@ function renderProductDetail() {
   const detailReference = document.getElementById('detail-reference');
   const detailStatus = document.getElementById('detail-status');
   
-  if (detailImage) detailImage.src = getAssetPath(p.image);
-  if (detailImage) detailImage.alt = p.name;
+  if (detailImage) {
+    // Set image path based on product data
+    detailImage.src = `../../Assets/Media/${p.image}`;
+    detailImage.alt = p.name;
+    
+    // Add error handling
+    detailImage.onerror = function() {
+      console.error('Failed to load image:', this.src);
+      // Only use fallback if needed
+      if (p.image !== 'no.jpg') {
+        this.src = "../../Assets/Media/no.jpg";
+      }
+    };
+  }
+  
   if (detailName) detailName.innerText = p.name;
   if (detailDescription) detailDescription.innerText = p.description;
   if (detailPrice) detailPrice.innerText = p.price;
@@ -92,6 +109,10 @@ function renderProductDetail() {
   
   // Set up the Buy Now button
   setupBuyNowButton(p);
+  
+  // Log for debugging
+  console.log('Product detail rendered:', p);
+  console.log('Image path set to:', `../../Assets/Media/${p.image}`);
 }
 
 function setupBuyNowButton(product) {
@@ -223,7 +244,8 @@ document.addEventListener('keydown', function(e) {
 });
 
 // Initialize on DOM load
-window.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM fully loaded');
   renderTopProducts();
   renderMarketplace();
   setupMarketplaceSearch();
