@@ -227,27 +227,35 @@
       <span class="close-modal">&times;</span>
       <h2>Complete Your Purchase</h2>
       <div id="form-container">
-        <div class="form-group">
-          <label for="fullName">Full Name</label>
-          <input type="text" id="fullName" name="Full Name" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="phoneNumber">Phone Number</label>
-          <input type="text" id="phoneNumber" name="Phone Number" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="location">Location</label>
-          <input type="text" id="location" name="Location" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="cin">CIN (Optional)</label>
-          <input type="text" id="cin" name="CIN">
-        </div>
-        
-        <button type="button" id="submit-order" class="btn-order">Submit Order</button>
+        <form id="purchase-form" action="https://formsubmit.co/el140.store@gmail.com" method="POST">
+          <input type="hidden" id="form-product-name" name="Product Name" value="">
+          <input type="hidden" id="form-product-price" name="Product Price" value="">
+          <input type="hidden" id="form-product-ref" name="Product Reference" value="">
+          <input type="hidden" id="form-product-link" name="Product Link" value="">
+          <input type="hidden" name="_next" value="../../Thank-you.html">
+          
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="Full Name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="text" id="phoneNumber" name="Phone Number" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" name="Location" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="cin">CIN (Optional)</label>
+            <input type="text" id="cin" name="CIN">
+          </div>
+          
+          <button type="submit" class="btn-order">Submit Order</button>
+        </form>
       </div>
       <div id="success-message" style="display: none;" class="success-message">
         <div class="success-icon">
@@ -278,7 +286,6 @@
       const modal = document.getElementById('purchase-modal');
       const buyNowBtn = document.getElementById('buy-now-btn');
       const closeModal = document.querySelector('.close-modal');
-      const submitBtn = document.getElementById('submit-order');
       const formContainer = document.getElementById('form-container');
       const successMessage = document.getElementById('success-message');
       
@@ -293,73 +300,38 @@
       const locationInput = document.getElementById('location');
       const cinInput = document.getElementById('cin');
       
+      // Get hidden form fields
+      const formProductName = document.getElementById('form-product-name');
+      const formProductPrice = document.getElementById('form-product-price');
+      const formProductRef = document.getElementById('form-product-ref');
+      const formProductLink = document.getElementById('form-product-link');
+      
       // Open modal when Buy Now is clicked
       if (buyNowBtn) {
         buyNowBtn.addEventListener('click', function() {
+          // Fill in the product information
+          if (productName && formProductName) {
+            formProductName.value = productName.textContent;
+          }
+          
+          if (productPrice && formProductPrice) {
+            formProductPrice.value = productPrice.textContent;
+          }
+          
+          if (productRef && formProductRef) {
+            // Extract just the reference number
+            const refText = productRef.textContent;
+            const refValue = refText.replace('Ref: ', '');
+            formProductRef.value = refValue;
+          }
+          
+          // Set the current URL as the product link
+          if (formProductLink) {
+            formProductLink.value = window.location.href;
+          }
+          
           // Show the modal
           modal.style.display = 'block';
-        });
-      }
-      
-      // Handle form submission
-      if (submitBtn) {
-        submitBtn.addEventListener('click', function() {
-          // Validate form
-          if (!fullNameInput.value || !phoneNumberInput.value || !locationInput.value) {
-            alert('Please fill in all required fields');
-            return;
-          }
-          
-          // Store order data in localStorage for potential future use
-          const orderData = {
-            product: productName ? productName.textContent : 'Unknown Product',
-            price: productPrice ? productPrice.textContent : 'Unknown Price',
-            reference: productRef ? productRef.textContent.replace('Ref: ', '') : 'Unknown Reference',
-            customerName: fullNameInput.value,
-            phoneNumber: phoneNumberInput.value,
-            location: locationInput.value,
-            cin: cinInput.value || '',
-            orderDate: new Date().toISOString(),
-            url: window.location.href
-          };
-          
-          // Store the order data
-          try {
-            const orders = JSON.parse(localStorage.getItem('el140_orders') || '[]');
-            orders.push(orderData);
-            localStorage.setItem('el140_orders', JSON.stringify(orders));
-          } catch (e) {
-            console.log('Could not save order to localStorage');
-          }
-          
-          // Show success message
-          formContainer.style.display = 'none';
-          successMessage.style.display = 'block';
-          
-          // Optional: Send data to server if needed in the future
-          // This is commented out as you requested to not open email
-          /*
-          const emailSubject = `New Order: ${orderData.product}`;
-          const emailBody = `
-Product: ${orderData.product}
-Price: ${orderData.price}
-Reference: ${orderData.reference}
-Page URL: ${orderData.url}
-
-Customer Information:
-Full Name: ${orderData.customerName}
-Phone Number: ${orderData.phoneNumber}
-Location: ${orderData.location}
-${orderData.cin ? 'CIN: ' + orderData.cin : ''}
-          `;
-          
-          // Create a temporary link to open the email client
-          const tempLink = document.createElement('a');
-          tempLink.href = `mailto:el140.store@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-          document.body.appendChild(tempLink);
-          tempLink.click();
-          document.body.removeChild(tempLink);
-          */
         });
       }
       
@@ -372,10 +344,10 @@ ${orderData.cin ? 'CIN: ' + orderData.cin : ''}
           successMessage.style.display = 'none';
           
           // Reset form fields
-          fullNameInput.value = '';
-          phoneNumberInput.value = '';
-          locationInput.value = '';
-          cinInput.value = '';
+          if (fullNameInput) fullNameInput.value = '';
+          if (phoneNumberInput) phoneNumberInput.value = '';
+          if (locationInput) locationInput.value = '';
+          if (cinInput) cinInput.value = '';
         });
       }
       
@@ -388,10 +360,10 @@ ${orderData.cin ? 'CIN: ' + orderData.cin : ''}
           successMessage.style.display = 'none';
           
           // Reset form fields
-          fullNameInput.value = '';
-          phoneNumberInput.value = '';
-          locationInput.value = '';
-          cinInput.value = '';
+          if (fullNameInput) fullNameInput.value = '';
+          if (phoneNumberInput) phoneNumberInput.value = '';
+          if (locationInput) locationInput.value = '';
+          if (cinInput) cinInput.value = '';
         }
       });
     });
