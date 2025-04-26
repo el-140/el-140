@@ -257,6 +257,9 @@
             <label for="cin">CIN (Optional)</label>
             <input type="text" id="cin" name="cin">
           </div>
+          <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" name="quantity" min="1" required>
           
           <button type="submit" class="btn-order">Submit Order</button>
         </form>
@@ -304,6 +307,7 @@
       const phoneNumberInput = document.getElementById('phoneNumber');
       const locationInput = document.getElementById('location');
       const cinInput = document.getElementById('cin');
+      const quantityInput = document.getElementById('quantity');
       
       // Get hidden form fields
       const formProductName = document.getElementById('form-product-name');
