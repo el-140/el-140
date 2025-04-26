@@ -73,13 +73,7 @@
     <div class="modal-content">
       <span class="close-modal">&times;</span>
       <h2>Complete Your Purchase</h2>
-      <form id="purchase-form" action="https://formsubmit.co/el140.store@gmail.com" method="POST">
-        <input type="hidden" id="form-product-name" name="Product Name" value="">
-        <input type="hidden" id="form-product-price" name="Product Price" value="">
-        <input type="hidden" id="form-product-ref" name="Product Reference" value="">
-        <input type="hidden" id="form-product-link" name="Product Link" value="">
-        <input type="hidden" name="_next" value="../../Thank-you.html">
-        
+      <div id="form-container">
         <div class="form-group">
           <label for="fullName">Full Name</label>
           <input type="text" id="fullName" name="Full Name" required>
@@ -100,8 +94,17 @@
           <input type="text" id="cin" name="CIN">
         </div>
         
-        <button type="submit" class="btn btn-primary">Submit Order</button>
-      </form>
+        <button type="button" id="submit-order" class="btn btn-primary">Submit Order</button>
+      </div>
+      <div id="success-message" style="display: none; text-align: center;">
+        <div style="color: #28a745; font-size: 3em; margin-bottom: 0.5em;">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>Thank You!</h3>
+        <p>Your order has been submitted successfully.</p>
+        <p>We will contact you shortly to confirm your purchase.</p>
+        <a href="../../index.html" class="btn btn-primary" style="margin-top: 1em;">Return to Home</a>
+      </div>
     </div>
   </div>
 
@@ -122,6 +125,9 @@
       const modal = document.getElementById('purchase-modal');
       const buyNowBtn = document.getElementById('buy-now-btn');
       const closeModal = document.querySelector('.close-modal');
+      const submitBtn = document.getElementById('submit-order');
+      const formContainer = document.getElementById('form-container');
+      const successMessage = document.getElementById('success-message');
       
       // Get product information
       const productName = document.getElementById('detail-name');
@@ -129,35 +135,63 @@
       const productRef = document.getElementById('detail-reference');
       
       // Get form fields
-      const formProductName = document.getElementById('form-product-name');
-      const formProductPrice = document.getElementById('form-product-price');
-      const formProductRef = document.getElementById('form-product-ref');
-      const formProductLink = document.getElementById('form-product-link');
+      const fullNameInput = document.getElementById('fullName');
+      const phoneNumberInput = document.getElementById('phoneNumber');
+      const locationInput = document.getElementById('location');
+      const cinInput = document.getElementById('cin');
       
       // Open modal when Buy Now is clicked
       if (buyNowBtn) {
         buyNowBtn.addEventListener('click', function() {
-          // Fill in the product information
-          if (productName && formProductName) {
-            formProductName.value = productName.textContent;
-          }
-          
-          if (productPrice && formProductPrice) {
-            formProductPrice.value = productPrice.textContent;
-          }
-          
-          if (productRef && formProductRef) {
-            // Extract just the reference number
-            const refText = productRef.textContent;
-            const refValue = refText.replace('Ref: ', '');
-            formProductRef.value = refValue;
-          }
-          
-          // Set the current URL as the product link
-          formProductLink.value = window.location.href;
-          
           // Show the modal
           modal.style.display = 'block';
+        });
+      }
+      
+      // Handle form submission
+      if (submitBtn) {
+        submitBtn.addEventListener('click', function() {
+          // Validate form
+          if (!fullNameInput.value || !phoneNumberInput.value || !locationInput.value) {
+            alert('Please fill in all required fields');
+            return;
+          }
+          
+          // Get product information
+          const prodName = productName ? productName.textContent : 'Unknown Product';
+          const prodPrice = productPrice ? productPrice.textContent : 'Unknown Price';
+          let prodRef = 'Unknown Reference';
+          
+          if (productRef) {
+            const refText = productRef.textContent;
+            prodRef = refText.replace('Ref: ', '');
+          }
+          
+          // Create email content
+          const emailSubject = `New Order: ${prodName}`;
+          const emailBody = `
+Product: ${prodName}
+Price: ${prodPrice}
+Reference: ${prodRef}
+Page URL: ${window.location.href}
+
+Customer Information:
+Full Name: ${fullNameInput.value}
+Phone Number: ${phoneNumberInput.value}
+Location: ${locationInput.value}
+${cinInput.value ? 'CIN: ' + cinInput.value : ''}
+          `;
+          
+          // Create a temporary link to open the email client
+          const tempLink = document.createElement('a');
+          tempLink.href = `mailto:el140.store@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+          document.body.appendChild(tempLink);
+          tempLink.click();
+          document.body.removeChild(tempLink);
+          
+          // Show success message
+          formContainer.style.display = 'none';
+          successMessage.style.display = 'block';
         });
       }
       
@@ -165,6 +199,9 @@
       if (closeModal) {
         closeModal.addEventListener('click', function() {
           modal.style.display = 'none';
+          // Reset form display if user reopens the modal
+          formContainer.style.display = 'block';
+          successMessage.style.display = 'none';
         });
       }
       
@@ -172,6 +209,9 @@
       window.addEventListener('click', function(event) {
         if (event.target === modal) {
           modal.style.display = 'none';
+          // Reset form display if user reopens the modal
+          formContainer.style.display = 'block';
+          successMessage.style.display = 'none';
         }
       });
     });
