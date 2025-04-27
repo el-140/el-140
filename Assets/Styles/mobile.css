@@ -8,10 +8,12 @@
     --section-padding: 4rem 1.5rem;
     --card-border-radius: 12px;
     --transition-speed: 0.3s;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --shadow-color-hover: rgba(0, 0, 0, 0.15);
+    --shadow-color: rgba(0, 0, 0, 0.05);
+    --shadow-color-hover: rgba(0, 0, 0, 0.1);
     --glass-bg: rgba(255, 255, 255, 0.8);
     --glass-border: rgba(255, 255, 255, 0.2);
+    --primary-rgb: 200, 168, 125; /* Rich beige in RGB */
+    --accent-rgb: 214, 142, 60; /* Warm orange in RGB */
   }
   
   body {

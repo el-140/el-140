@@ -1,22 +1,22 @@
 :root {
   /* Color Palette */
-  --primary: #0056b3;
-  --primary-light: #007bff;
-  --primary-dark: #004494;
-  --accent: #ff6b6b;
-  --accent-light: #ff9e9e;
-  --gold: #ffd700;
-  --surface: #ffffff;
-  --surface-blur: rgba(255, 255, 255, 0.85);
-  --background: #f8f9fa;
-  --background-alt: #f0f2f5;
-  --text: #212529;
+  --primary: #c8a87d; /* Rich beige */
+  --primary-light: #e0cdb1; /* Soft beige */
+  --primary-dark: #a88a5c; /* Deep beige */
+  --accent: #d68e3c; /* Warm orange */
+  --accent-light: #e6a757; /* Light orange */
+  --gold: #d4af37; /* Gold */
+  --surface: #ffffff; /* White */
+  --surface-blur: rgba(255, 255, 255, 0.9);
+  --background: #f7f2e9; /* Very light beige */
+  --background-alt: #efe5d3; /* Light beige background */
+  --text: #3a3a3a; /* Dark gray for better readability */
   --text-light: #6c757d;
   --text-muted: #adb5bd;
-  --success: #28a745;
-  --danger: #dc3545;
-  --warning: #ffc107;
-  --info: #17a2b8;
+  --success: #7d9e7d; /* Muted green */
+  --danger: #c27c7c; /* Muted red */
+  --warning: #d4b06a; /* Muted amber */
+  --info: #7c9fc2; /* Muted blue */
   
   /* Spacing */
   --spacing-xs: 0.25rem;
