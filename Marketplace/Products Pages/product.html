@@ -858,7 +858,7 @@
       // Store data in localStorage when form is submitted
       if (purchaseForm) {
         purchaseForm.addEventListener('submit', function(e) {
-          // Prevent default form submission for demo purposes
+          // Prevent default form submission temporarily
           e.preventDefault();
           
           // Show loading state
@@ -893,7 +893,7 @@
             
             // Simulate form submission delay
             setTimeout(function() {
-              // Hide form and show success message
+              // For demo purposes, show success message
               formContainer.style.display = 'none';
               successMessage.style.display = 'block';
               
@@ -904,6 +904,9 @@
                   behavior: 'smooth'
                 });
               }
+              
+              // Actually submit the form to the server
+              purchaseForm.submit();
             }, 1000);
             
           } catch (e) {
