@@ -484,13 +484,14 @@
     /* Mobile Styles */
     @media (max-width: 768px) {
       .navbar {
-        padding: 1rem;
+        padding: 0.8rem;
       }
       
       .product-detail-container {
-        padding: 1.5rem;
-        margin: 1.5rem;
-        gap: 2rem;
+        padding: 1rem;
+        margin: 1rem;
+        gap: 1.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
       }
       
       .product-detail-left, 
@@ -498,21 +499,69 @@
         width: 100%;
       }
       
+      .product-detail-left img {
+        max-height: 280px;
+        object-fit: contain;
+        margin: 0 auto;
+        display: block;
+        border-radius: 8px;
+      }
+      
+      .status-badge {
+        margin-top: 0.8rem;
+        font-size: 0.85rem;
+        justify-content: center;
+      }
+      
+      .badge {
+        padding: 0.3em 0.8em;
+        font-size: 0.8em;
+      }
+      
       .product-detail-right h2 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+        text-align: center;
       }
       
       .product-detail-right .price {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        margin: 1rem auto;
+        text-align: center;
+        display: block;
+      }
+      
+      .product-detail-right .price:after {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
       }
       
       .product-detail-right p {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        text-align: center;
+      }
+      
+      #detail-reference {
+        text-align: center;
+        font-size: 0.85rem;
+        margin-bottom: 1.5rem;
       }
       
       .btn-primary {
         padding: 0.7rem 1.2rem;
         font-size: 0.95rem;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 80%;
+        max-width: 200px;
+      }
+      
+      .btn-primary i {
+        font-size: 1rem;
       }
       
       .modal-content {
@@ -549,8 +598,6 @@
       .btn-order {
         padding: 1em;
         margin-top: 1em;
-        position: sticky;
-        bottom: 1em;
       }
       
       .success-icon {
@@ -569,6 +616,42 @@
         padding: 0.8em 1.5em;
       }
     }
+    
+    /* Extra Small Devices */
+    @media (max-width: 480px) {
+      .product-detail-container {
+        padding: 0.8rem;
+        margin: 0.8rem;
+        gap: 1rem;
+      }
+      
+      .product-detail-left img {
+        max-height: 220px;
+      }
+      
+      .product-detail-right h2 {
+        font-size: 1.3rem;
+      }
+      
+      .product-detail-right .price {
+        font-size: 1.2rem;
+      }
+      
+      .product-detail-right p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+      
+      #detail-reference {
+        font-size: 0.8rem;
+      }
+      
+      .btn-primary {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        width: 90%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -585,7 +668,7 @@
 
   <div class="product-detail-container" id="product-detail">
     <div class="product-detail-left">
-      <img id="detail-image" src="" alt="Product Image">
+      <img id="detail-image" src="" alt="Product Image" onerror="this.src='../../Assets/Media/12.png'">
       <p class="status-badge">Status: <span id="detail-status" class="badge"></span></p>
     </div>
     <div class="product-detail-right">
@@ -593,7 +676,7 @@
       <p id="detail-description"></p>
       <p class="price" id="detail-price"></p>
       <p id="detail-reference"></p>
-      <button id="buy-now-btn" class="btn btn-primary">Buy Now</button>
+      <button id="buy-now-btn" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Buy Now</button>
     </div>
   </div>
 
@@ -695,11 +778,6 @@
       const closeModal = document.querySelector('.close-modal');
       const purchaseForm = document.getElementById('purchase-form');
       
-      // Get product elements
-      const productName = document.getElementById('detail-name');
-      const productPrice = document.getElementById('detail-price');
-      const productRef = document.getElementById('detail-reference');
-      
       // Get form fields
       const fullNameInput = document.getElementById('fullName');
       const phoneNumberInput = document.getElementById('phoneNumber');
@@ -718,10 +796,23 @@
       const summaryProductPrice = document.getElementById('summary-product-price');
       const summaryProductRef = document.getElementById('summary-product-ref');
       
+      // Mobile optimization - scroll to top when modal opens
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+      
       // Open modal when Buy Now is clicked
       const buyNowBtn = document.getElementById('buy-now-btn');
       if (buyNowBtn) {
         buyNowBtn.addEventListener('click', function() {
+          // Get current product details from the page
+          const productName = document.getElementById('detail-name');
+          const productPrice = document.getElementById('detail-price');
+          const productRef = document.getElementById('detail-reference');
+          
           // Fill in the product information
           if (productName && formProductName) {
             formProductName.value = productName.textContent;
@@ -751,12 +842,37 @@
           
           // Add body class to prevent scrolling
           document.body.classList.add('modal-open');
+          
+          // For mobile - scroll to top
+          scrollToTop();
+          
+          // Focus on the first input field for better UX
+          if (fullNameInput) {
+            setTimeout(function() {
+              fullNameInput.focus();
+            }, 400);
+          }
         });
       }
       
       // Store data in localStorage when form is submitted
       if (purchaseForm) {
-        purchaseForm.addEventListener('submit', function() {
+        purchaseForm.addEventListener('submit', function(e) {
+          // Prevent default form submission for demo purposes
+          e.preventDefault();
+          
+          // Show loading state
+          const submitBtn = this.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            submitBtn.disabled = true;
+          }
+          
+          // Get current product details
+          const productName = document.getElementById('detail-name');
+          const productPrice = document.getElementById('detail-price');
+          const productRef = document.getElementById('detail-reference');
+          
           // Store order data in localStorage as backup
           const orderData = {
             product: productName ? productName.textContent : 'Unknown Product',
@@ -774,8 +890,30 @@
             const orders = JSON.parse(localStorage.getItem('el140_orders') || '[]');
             orders.push(orderData);
             localStorage.setItem('el140_orders', JSON.stringify(orders));
+            
+            // Simulate form submission delay
+            setTimeout(function() {
+              // Hide form and show success message
+              formContainer.style.display = 'none';
+              successMessage.style.display = 'block';
+              
+              // Scroll to top of modal to show success message
+              if (modal.scrollTo) {
+                modal.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
+              }
+            }, 1000);
+            
           } catch (e) {
             console.log('Could not save order to localStorage');
+            alert('There was an error processing your order. Please try again.');
+            
+            if (submitBtn) {
+              submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Order';
+              submitBtn.disabled = false;
+            }
           }
         });
       }
@@ -794,6 +932,13 @@
           if (locationInput) locationInput.value = '';
           if (cinInput) cinInput.value = '';
           if (quantityInput) quantityInput.value = '1';
+          
+          // Reset submit button
+          const submitBtn = purchaseForm.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Order';
+            submitBtn.disabled = false;
+          }
           
           // Remove body class to allow scrolling
           document.body.classList.remove('modal-open');
@@ -814,6 +959,13 @@
           if (locationInput) locationInput.value = '';
           if (cinInput) cinInput.value = '';
           if (quantityInput) quantityInput.value = '1';
+          
+          // Reset submit button
+          const submitBtn = purchaseForm.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Submit Order';
+            submitBtn.disabled = false;
+          }
           
           // Remove body class to allow scrolling
           document.body.classList.remove('modal-open');
